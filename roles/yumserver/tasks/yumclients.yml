@@ -1,0 +1,7 @@
+- name: "Configuring yum repository 1"
+  yum_repository:
+    baseurl: "ftp://{{ groups['yumserver'][0] }}/pub/packages/AppStream"
+    name: "repository1"
+    description: "repository1"
+    gpgcheck: no
+  when: "'yumclients'in group_names"

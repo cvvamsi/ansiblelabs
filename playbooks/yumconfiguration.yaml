@@ -1,0 +1,86 @@
+- hosts: yumserver 
+
+  vars:
+    cdrom: "/run/media/demo/RHEL-8-3-0-BaseOS-x86_64"
+    query: "[?mount=='{{cdrom}}'].device"
+    redhatcdmount: "/dvd1"
+    packages: "/packages"
+
+  tasks:
+  - name: "Checking if the Red Hat DVD is mounted on the machine"
+    set_fact:
+      dvdmounted: true
+    when: item.mount == "{{cdrom}}"
+    loop: "{{ansible_mounts}}"
+
+  - debug:         
+      msg: "On machine {{ansible_nodename}} Red Hat DVD is mounted and yum configuration will continue"    
+    when: dvdmounted is defined
+  
+  - debug:
+      msg: "On Machine {{ansible_nodename}} Red Hat DVD is not mounted and yum configuration will not continue"
+    when: dvdmounted is not defined   
+
+  - name: "Configuring YUM repositories when the Red hat DVD is mounted"
+    block:
+    - name: "Getting the Red Hat CDROM device from the list"
+      set_fact:
+        device: "{{ansible_mounts|json_query(query)|first}}"
+
+    - name: "Displaying the CDROM device"
+      debug:
+        msg: "The Red Hat CDROM is located at {{device}}"
+
+    - name: "Mounting the CDROM to the /dvd1 folder"
+      mount:
+        path: "{{redhatcdmount}}"
+        src: "{{device}}"
+        fstype: iso9660
+        opts: ro,auto,nofail
+        state: mounted
+
+    - name: "Creating a directory to store the repo files"
+      file:
+        name: "{{packages}}"
+        state: directory
+
+    - name: "Copying the AppStream folder"
+      copy:
+        src: "{{redhatcdmount}}/AppStream"
+        dest: "{{packages}}/"
+        remote_src: yes
+    
+    - name: "Copying the BaseOS folder"
+      copy:
+        src: "{{redhatcdmount}}/BaseOS"
+        dest: "{{packages}}/"
+        remote_src: yes
+    
+    - name: "Configuring yum repository 1"
+      yum_repository:
+        baseurl: "/packages/AppStream"
+        name: "repository1"
+        description: "repository1"
+        gpgcheck: no
+
+    - name: "Configuring yum repository 2"
+      yum_repository:
+        baseurl: "/packages/BaseOS"
+        name: "repository2"
+        description: "repository2"
+        gpgcheck: no
+
+    - name: "Configuring epel repository"
+      yum:
+        name: https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
+        state: present
+        disable_gpg_check: yes
+
+    - name: Configuring fusion repository
+      yum:
+        name: https://download1.rpmfusion.org/free/el/rpmfusion-free-release-8.noarch.rpm
+        state: present
+        disable_gpg_check: yes
+    
+    when: dvdmounted is defined
+         

@@ -1,0 +1,21 @@
+- name: Install vfstpd and ftp
+  yum:
+    name: 
+    - vsftpd
+    - ftp
+    state: present
+  when: "'yumserver' in group_names"
+
+- name: Restarting vsftpd service
+  service:
+    name: vsftpd
+    state: restarted
+  when: "'yumserver' in group_names"
+
+- name: Allowing port 21 for communication
+  firewalld:
+    port: 21/tcp
+    state: enabled
+    permanent: yes
+    immediate: yes
+  when: "'yumserver' in group_names"

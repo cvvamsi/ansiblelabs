@@ -1,0 +1,5 @@
+---
+# tasks file for yumserver
+- include: install.yml
+- include: ftp.yml 
+- include: yumclients.yml 

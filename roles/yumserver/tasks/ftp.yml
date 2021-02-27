@@ -1,0 +1,7 @@
+- name: Copying the packages folder 
+  copy:
+    src: "{{ packages }}"   
+    dest: "/var/ftp/pub/"
+    remote_src: yes
+  when: "'yumserver' in group_names"
+
