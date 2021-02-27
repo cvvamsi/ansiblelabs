@@ -1,0 +1,12 @@
+- name: Adding appropriate ACLs
+  acl:
+    path: /var/ftp/pub/packages
+    entity: root
+    etype: user
+    permissions: rwx
+    state: present 
+  when: "'yumserver' in group_names"
+  
+- name: Chnaging the context of SELinux for FTP
+  shell: chcon -Rt public_content_t /var/ftp/pub/packages
+  when: "'yumserver' in group_names"

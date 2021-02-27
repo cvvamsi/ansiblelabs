@@ -6,11 +6,13 @@
     state: present
   when: "'yumserver' in group_names"
 
-- name: Restarting vsftpd service
-  service:
-    name: vsftpd
-    state: restarted
-  when: "'yumserver' in group_names"
+- name: Copy vsftpd.conf file
+  copy:
+    src: vsftpd.conf
+    dest: /etc/vsftpd/vsftpd.conf
+  when: "'yumserver' in group_names"  
+  notify:
+  - Restarting vsftpd service
 
 - name: Allowing port 21 for communication
   firewalld:
@@ -19,3 +21,17 @@
     permanent: yes
     immediate: yes
   when: "'yumserver' in group_names"
+  notify:
+  - Restart firewalld
+
+- name: Allowing FTP for communication
+  firewalld:
+    service: ftp
+    state: enabled
+    permanent: yes
+    immediate: yes
+  when: "'yumserver' in group_names"
+  notify:
+  - Restart firewalld
+
+ 

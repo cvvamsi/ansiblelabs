@@ -1,2 +1,13 @@
 ---
 # handlers file for yumserver
+- name: Restarting vsftpd service
+  service:
+    name: vsftpd
+    state: restarted
+
+- name: Restart firewalld
+  systemd:
+    name: firewalld
+    daemon_reload: yes
+    name: firewalld
+

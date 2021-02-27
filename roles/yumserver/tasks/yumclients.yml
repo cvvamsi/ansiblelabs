@@ -5,3 +5,11 @@
     description: "repository1"
     gpgcheck: no
   when: "'yumclients'in group_names"
+
+- name: "Configuring yum repository 2"
+  yum_repository:
+    baseurl: "ftp://{{ groups['yumserver'][0] }}/pub/packages/BaseOS"
+    name: "repository2"
+    description: "repository2"
+    gpgcheck: no
+  when: "'yumclients'in group_names"
