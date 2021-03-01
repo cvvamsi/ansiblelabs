@@ -5,3 +5,10 @@
     setype: http_port_t
     state: present
   when: "'webservers' in group_names"
+
+- name: Allow SELinux to enable connection for haproxy
+  seboolean:
+    name: haproxy_connect_any
+    state: yes
+    persistent: yes
+  when: "'loadbalancer' in group_names"
