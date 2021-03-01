@@ -90,4 +90,3 @@ backend app
 {% for i in groups['webservers'] %}
     server app{{ loop.index }} {{ i }}:{{ backendport }}
 {% endfor %}
-    server  app4 127.0.0.1:5004 check
