@@ -6,6 +6,14 @@
     state: present
   when: "'yumserver' in group_names"
 
+- name: Enabling the service vsftpd so that it starts on reboot
+  service:
+    name: vsftpd
+    enabled: yes
+  when: "'yumserver' in group_names"
+  notify:
+  - Restarting vsftpd service
+
 - name: Copy vsftpd.conf file
   copy:
     src: vsftpd.conf
