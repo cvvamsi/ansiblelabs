@@ -13,10 +13,10 @@ node11
 node12
 
 [webservers]
-node[1:6]
+node[2:7]
 
-[lb]
-node7
+[loadbalancer]
+node8
 
 [yumserver]
 node1

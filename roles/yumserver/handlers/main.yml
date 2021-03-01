@@ -3,6 +3,7 @@
 - name: Restarting vsftpd service
   service:
     name: vsftpd
+    enabled: yes
     state: restarted
 
 - name: Restart firewalld

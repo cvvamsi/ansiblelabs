@@ -1,0 +1,11 @@
+- name: Install httpd 
+  yum:
+    name: httpd
+    state: present
+  when: "'webservers' in group_names"
+
+- name: Install haproxy
+  yum:
+    name: haproxy
+    state: present
+  when: "'loadbalancer' in group_names"

@@ -1,0 +1,7 @@
+- name: Allow Apache to listen on tcp port {{ backendport }}
+  seport:
+    ports: "{{ backendport }}"
+    proto: tcp
+    setype: http_port_t
+    state: present
+  when: "'webservers' in group_names"

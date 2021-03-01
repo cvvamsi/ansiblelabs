@@ -1,0 +1,4 @@
+---
+# vars file for webserver
+frontendport: 8080
+backendport : 83

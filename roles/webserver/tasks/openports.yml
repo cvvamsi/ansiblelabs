@@ -1,0 +1,18 @@
+- name: Allowing communication on port {{ backendport }}
+  firewalld:
+    port: "{{ backendport }}/tcp"
+    state: enabled
+    permanent: yes
+    immediate: yes
+  when: "'webservers' in group_names"
+  notify:
+  - Restart firewalld
+
+- name: Allowing communication on front end port
+  firewalld:
+    port: "{{ frontendport }}/tcp"
+    state: enabled
+    permanent: yes
+    immediate: yes
+  when: "'loadbalancer' in group_names"
+

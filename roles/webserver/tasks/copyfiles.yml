@@ -1,0 +1,23 @@
+- name: Copying the index.html
+  template:
+    src: index.j2
+    dest: /var/www/html/index.html
+  when: "'webservers' in group_names"
+  notify:
+  - Restart Apache
+
+- name: Copy the httpd.conf
+  template:
+    src: httpd.j2
+    dest: /etc/httpd/conf/httpd.conf
+  when: "'webservers' in group_names"
+  notify:
+  - Restart Apache
+
+- name: copy the haproxy.cfg file
+  template:
+    src: haproxy.j2
+    dest: /etc/haproxy/haproxy.cfg
+  when: "'loadbalancer' in group_names"
+  notify:
+  - Restart haproxy 

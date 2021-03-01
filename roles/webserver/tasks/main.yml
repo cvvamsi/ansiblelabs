@@ -1,0 +1,6 @@
+---
+# tasks file for webserver
+- include: install.yml
+- include: copyfiles.yml
+- include: openports.yml
+- include: selinux.yml

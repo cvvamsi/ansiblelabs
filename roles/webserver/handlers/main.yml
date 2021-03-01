@@ -1,0 +1,22 @@
+---
+# handlers file for webserver
+- name: Restart firewalld
+  systemd:
+    name: firewalld
+    daemon_reload: yes
+    name: firewalld
+  when: "'webservers' in group_names"
+
+- name: Restart Apache
+  service:
+    name: httpd
+    enabled: yes
+    state: restarted
+  when: "'webservers' in group_names"
+
+- name: Restart haproxy
+  service:
+    name: haproxy
+    enabled: yes
+    state: restarted
+  when: "'loadbalancer' in group_names"
