@@ -1,6 +1,0 @@
-- hosts: all
-  gather_facts: true
-  tasks:
-  - name: Testing
-    debug:
-      msg: "The node name is {{ ansible_nodename }} and IPAddress is {{ ansible_facts['default_ipv4']['address'] }}"
