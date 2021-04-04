@@ -11,6 +11,7 @@ node9
 node10
 node11
 node12
+test2
 
 [webservers]
 node[2:7]
@@ -23,3 +24,9 @@ node1
 
 [yumclients]
 node[2:12]
+
+[others:children]
+webservers
+yumserver
+
+
