@@ -29,4 +29,5 @@ node[2:12]
 webservers
 yumserver
 
-
+[win]
+winnode1
